@@ -1,109 +1,92 @@
 #include <stdio.h>
 #include <stdlib.h>
-//Global Variable
-int size,choice,ele;
+#include <stdbool.h>
 
+// N will be the capacity of the Static Stack
+#define N 1000
 
-//Creating Stack
-struct stack{
-    int arr[100];
-    int top;
+// Initializing the top of the stack to be -1
+int top = -1;
 
-}st;
+// Initializing the stack using an array
+int stack[N];
 
-//Inserting Element
-void push(int element)
-{
-    if((st.top)==size)
-    {
-        printf("\n Stack is Full");
-    }
-    else
-    {
-        st.top--;
-        printf("\nEnter a Value ");
-        scanf("%s",&ele);
-        st.arr[st.top]=ele;
-    }
-}
+// Function prototypes
+void push();       // Push element to the top of the stack
+int pop();         // Remove and return the top most element of the stack
+int peek();        // Return the top most element of the stack
+bool isEmpty();    // Check if the stack is in Underflow state or not
+bool isFull();     // Check if the stack is in Overflow state or not
 
-//Removing Element
-int pop()
-{
-    if((st.top)==-1)
-    {
-        printf("\nStack is Empty");
-    }
-    else
-    {
-        int out;
-        out=st.arr[st.top];
-        st.top++;
-        return out;
-    }
-}
+int main(){
+    printf("STATIC ARRAY (Total Capacity: %d)\n", N);
+    int choice;
 
-//Peek
-int peek()
-{
-    int display;
-    display=st.arr[st.rear];
-    return display;
-}
+    while(1){
+        printf("\nChoose any of the following options:\n");
+        printf(" 0: Exit            1: Push            2: Pop            3: Peek\n");
+        printf(" 4: Check if the stack is empty     5: Check if the stack is full\n\n");
+        scanf("%d", &choice);
 
-//Display Stack
-void display()
-{
-    if((st.top)>=0)
-    {
-        printf("\n\nElements in the Stack");
-        for(i=st.top;i>=0;i++)
-        {
-            printf("\n%d",st.arr[i]);
+        switch(choice){
+            case 0: exit(0);
+            case 1: push(); break;
+            case 2: pop(); break;
+            case 3: peek(); break;
+            case 4: isEmpty(); break;
+            case 5: isFull(); break;
+            default: printf("Please choose a correct option!");
         }
     }
-    else
-    {
-        printf("No elements to Display");
-    }
-}
-
-int main()
-{
-    st.top=-1;
-    printf("Enter a Stack size less than 100 : ");
-    scanf("%d",&size);
-    printf("\nStack Operations.....");
-    printf("\n\t 1.PUSH\n\t 2.POP\n\t 3.PEEK\n\t 4.DISPLAY\n\t 5.EXIT");
-
-    do{
-        printf("\nEnter Your Choice  ");
-        scanf("%c",&choice);
-        switch(choice)
-        {
-        case 1:
-            {
-                push(ele);break;
-            }
-        case 2:
-            {
-                printf("%d",pop());
-            }
-        case 3:
-            {
-                printf("%d",peek());
-            }
-        case 4:
-            {
-                display();break;
-            }
-        case 5:
-            {
-                printf("\n\t EXIT Point");break;
-            }
-        default:
-            printf("\nEnter a correct choice (1,2,3,4,5)");
-        }
-    }while(choice=5);
     return 0;
+}
+
+void push(){
+    // Checking overflow state
+    if(top == N-1)
+        printf("Overflow State: can't add more elements into the stack\n");
+    else{
+        int x;
+        printf("Enter element to be pushed into the stack: ");
+        scanf("%d", &x);
+        top+=1;
+        stack[top] = x;
+    }
+}
+
+int pop(){
+    // Checking underflow state
+    if(top == -1)
+        printf("Underflow State: Stack already empty, can't remove any element\n");
+    else{
+        int x = stack[top];
+        printf("Popping %d out of the stack\n", x);
+        top-=1;
+        return x;
+    }
+    return -1;
+}
+
+int peek(){
+    int x = stack[top];
+    printf("%d is the top most element of the stack\n", x);
+    return x;
+}
+
+bool isEmpty(){
+    if(top == -1){
+        printf("Stack is empty: Underflow State\n");
+        return true;
+    }
+    printf("Stack is not empty\n");
+    return false;
+}
+
+bool isFull(){
+    if(top == N-1){
+        printf("Stack is full: Overflow State\n");
+        return true;
+    }
+    printf("Stack is not full\n");
+    return false;
 }
